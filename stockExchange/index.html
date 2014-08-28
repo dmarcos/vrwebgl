@@ -197,56 +197,20 @@ window.addEventListener("keypress", onkey, true);
 }
 
 .pane {
-  width: 100px;
+  width: 150px;
   height: 50px;
   color: white;
   font-family: sans-serif;
   text-align: center;
   line-height: 50px;
-}
-
-/* XXX The translate -100,-150 moves the center of each element to 0,0.  transform-origin
- * at 50% 50% should take care of that, but I'm not sure why it's not.  (It transforms
- * by half the width/height).
- */
-#pane1 {
-  background: green;
-  transform: rotateY(0deg) translate3d(0, 0, 500px) translate(-100px, -150px);
-}
-
-#pane2 {
-  background: blue;
-  transform: rotateY(90deg) translate3d(0, 0, 500px) translate(-100px, -150px);
-}
-
-#pane3 {
-  background: red;
-  transform: rotateY(180deg) translate3d(0, 0, 500px) translate(-100px, -150px);
-}
-
-#pane4 {
-  background: orange;
-  transform:  rotateY(-90deg) translate3d(0, 0, 500px) translate(-100px, -150px);
-}
-
-#text1 {
-  color: orange;
-  font-family: Helvetica, sans-serif;
-  font-size: 36px;
-  transform: rotateY(45deg) translate3d(0, 0, 500px) translate(-100px, -150px);
-}
-
-#text2 {
-  color: orange;
-  font-family: Helvetica, sans-serif;
-  font-size: 36px;
-  transform: rotateY(-45deg) translate3d(0, 0, 500px) translate(-100px, -150px);
+  background-color: red;
 }
 
 #bottom {
   background-image: linear-gradient(to bottom, rgba(0, 128, 128, 1.0) 0%, rgba(128, 128, 0, 1.0) 100%);
   width: 1000px; height: 1000px;
   transform: translate(-500px, -500px) rotateX(90deg) translateZ(-200px);
+  border-radius: 50%
 }
 
 @keyframes rotate {
@@ -259,7 +223,11 @@ window.addEventListener("keypress", onkey, true);
 }
 
 .animate {
-  animation: 10s rotate linear infinite;
+  animation: 15s rotate linear infinite;
+}
+
+.reverse {
+  animation-direction: reverse;
 }
 
 
@@ -271,14 +239,71 @@ window.addEventListener("keypress", onkey, true);
          This and all its children will have transform-style: preserve-3d set via the class, as well as
          transform-origin set to 0,0 -->
     <div id="camera" class="threed">
-    <div id="spinner" class="threed animate">
-      <div id="pane1" class="threed pane">XXX</div>
-      <div id="pane2" class="threed pane">XXX</div>
-      <div id="pane3" class="threed pane">XXX</div>
-      <div id="pane4" class="threed pane">XXX</div>
-    </div>
       <div id="bottom" class="threed"></div>
     </div>
   </div>
+  <script src="js/vendor/jquery.js"></script>
+  <script type="text/javascript">
+  function generateStockRow(num, verticalMargin, reverse, stockValues) {
+    var i;
+    var panelElement;
+    var horizontalMargin = 360 / num;
+    var rowElement = document.createElement('div');
+    var stockValue;
+    rowElement.classList.add('threed');
+    rowElement.classList.add('animate');
+    if (reverse) {
+      rowElement.classList.add('reverse');
+    }
+    verticalMargin += 150;
+
+    for (i = 0; i < num; ++i) {
+      stockValue = stockValues[i % stockValues.length];
+      panelElement = document.createElement('div');
+      panelElement.classList.add('threed');
+      panelElement.classList.add('pane');
+      panelElement.textContent = stockValue.symbol + ' ' + stockValue.value;
+      panelElement.style.transform =
+      'rotateY(' + horizontalMargin * i + 'deg) translate3d(0, 0, 500px) translate(-100px, -' + verticalMargin + 'px)';
+      rowElement.appendChild(panelElement);
+    }
+
+    return rowElement;
+  }
+
+  function generateStockPrices(num, rows, stockValues) {
+    var numRow = num / rows;
+    var container = document.querySelector('#camera');
+    var stepMargin = 100;
+    var i;
+    for (i=0; i<rows; i++) {
+      container.appendChild(generateStockRow(numRow, stepMargin*i, i % 2 == 0, stockValues));
+    }
+  }
+
+  function getStockValues() {
+   var script = document.createElement('script');
+   script.setAttribute('src', "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quote%20where%20symbol%3D'YHOO'%20or%20symbol%3D'AAPL'%20or%20symbol%3D'MSFT'%20or%20symbol%3D'TSLA'%20or%20symbol%3D'GOOG'%20or%20symbol%3D'FB'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=parseStockValues");
+   document.body.appendChild(script);
+  }
+
+  function parseStockValues(data) {
+   var stockValues = data.query.results.quote;
+   var stockValue;
+   var parsedValues = [];
+   var i;
+   for (i=0; i<stockValues.length;++i) {
+    stockValue = stockValues[i];
+    parsedValues.push({
+      symbol: stockValue.Symbol,
+      value: stockValue.LastTradePriceOnly
+    })
+   }
+    generateStockPrices(100, 10, parsedValues);
+  }
+
+  getStockValues();
+
+  </script>
 </body>
 </html>
