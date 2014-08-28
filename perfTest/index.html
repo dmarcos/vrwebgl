@@ -88,50 +88,6 @@ var cssCamera;
 var cssCameraPositionTransform = "translate3d(0, 0, 0) rotateZ(180deg) rotateY(180deg)";
 
 
-function normalizeQuaternion(q) {
-  var l = Math.sqrt( q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w );
-
-  if ( l === 0 ) {
-    q.x = 0;
-    q.y = 0;
-    q.z = 0;
-    q.w = 0;
-  } else {
-    l = 1 / l;
-    q.x = q.x * l;
-    q.y = q.y * l;
-    q.z = q.z * l;
-    q.w = q.w * l;
-  }
-
-  return q;
-}
-
-function multiplyQuaternions(q1, q2) {
-  // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
-  var q = {};
-  q.x =  q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x;
-  q.y = -q1.x * q2.z + q1.y * q2.w + q1.z * q2.x + q1.w * q2.y;
-  q.z =  q1.x * q2.y - q1.y * q2.x + q1.z * q2.w + q1.w * q2.z;
-  q.w = -q1.x * q2.x - q1.y * q2.y - q1.z * q2.z + q1.w * q2.w;
-  return q;
-}
-
-// a radians
-// e.g: quaternionFromEuler(1, 0, 0, -15*PI/180)
-function quaternionFromEuler(x, y, z, a){
-    // Here we calculate the sin( theta / 2) once for optimization
-    var result = Math.sin( (a) / 2.0 );
-    var q = {
-      'x': x * result,
-      'y': y * result,
-      'z': z * result,
-      'w': Math.cos( a / 2.0 )
-    };
-
-    return normalizeQuaternion(q);
-}
-
 function frameCallback() {
   // This is needed to update the CSS orientation/position from the HMD's orientation/position.
   // In the future, we may have CSS transform function to do this automatically -- for example:
@@ -146,45 +102,9 @@ function frameCallback() {
   var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation, true);
   var transform = cssOrientationMatrix + " " + cssCameraPositionTransform;
   cssCamera.style.transform = transform;
-  updateLaser(eulerFromQuaternion(state.orientation), state.orientation);
-}
-
-function updateLaser(attitude, q) {
-  var laserElement = document.querySelector('#laser');
-  var attitude = eulerFromQuaternion(q);
-  // var transform =
-  //   'rotateX(' + attitude.pitch + 'deg) ' +
-  //   'rotateY(' + -attitude.yaw +  'deg) ' +
-  //   'translate3d(0, 0, 500px) translate(-100px, -150px)';
-  var pitch = attitude.pitch;
-  q = multiplyQuaternions(q, quaternionFromEuler(1, 0, 0, - 2 * pitch * Math.PI/180));
-  var cssOrientationMatrix = cssMatrixFromOrientation(q, true);
-  var cssLaserPositionTransform = 'translate3d(0, 0, 500px) translate(-100px, -150px)';
-  transform = cssOrientationMatrix + " " + cssLaserPositionTransform;
-  laserElement.style.transform = transform;
-  highlightStars(attitude.pitch, -attitude.yaw);
 }
 
 var stars = [];
-
-function highlightStars(pitch, yaw) {
-  var i;
-  var star;
-  var margin = 5;
-  for (i=0; i<stars.length; i++) {
-    star = stars[i];
-    //console.log("yaw: " + yaw + " pitch: " + pitch + " ra: " + star.ra + " dec: " + star.dec);
-    star.labelEl.style.display = 'none';
-    if (Math.abs(pitch) < Math.abs(star.dec) - margin || Math.abs(pitch) > Math.abs(star.dec) + margin) {
-      continue;
-    }
-    if (Math.abs(yaw) < Math.abs(star.ra) - margin || Math.abs(yaw) > Math.abs(star.ra) + margin) {
-      continue;
-    }
-    star.labelEl.style.display = 'inline';
-  }
-
-}
 
 function vrDeviceCallback(vrdevs) {
   for (var i = 0; i < vrdevs.length; ++i) {
@@ -226,6 +146,8 @@ function onkey(event) {
   case 'r':
     rotateSky();
     break;
+  case 's':
+    generateStars(100);
   }
 }
 
@@ -337,12 +259,12 @@ window.addEventListener("keypress", onkey, true);
   transform: translate(-500px, -500px) rotateX(90deg) translateZ(-200px);
 }
 
-#laser {
-  width: 50px;
-  height: 50px;
+.stars-count {
+  width: 150px;
+  height: 150px;
   background-color: transparent;
-  border: 3px solid green;
-  border-radius: 50%;
+  color: white;
+  font-size: 30px;
   transform: rotateY(0deg) rotateX(0deg) translate3d(0, 0, 500px) translate(-100px, -150px);
 }
 
@@ -367,9 +289,9 @@ window.addEventListener("keypress", onkey, true);
          This and all its children will have transform-style: preserve-3d set via the class, as well as
          transform-origin set to 0,0 -->
     <div id="camera" class="threed">
-    <div id="laser" class="threed"></div>
-    <div id="sky" class="threed">
-    <div id="ground" class="threed"></div>
+      <div id="sky" class="threed">
+      <div id="ground" class="threed"></div>
+      <div class="threed stars-count"></div>
     </div>
   </div>
   <script type="text/javascript">
@@ -381,40 +303,34 @@ window.addEventListener("keypress", onkey, true);
       "#F6F5FD"
     ];
 
-    function generateStars(numStars) {
+    function addMoon() {
       var skyElement = document.querySelector('#sky');
       var moonElement = document.createElement('div');
-      var moonLabelElement = document.createElement('div');
-      var polarisElement = document.createElement('div');
-      for (i=0; i < numStars; ++i) {
-        skyElement.appendChild(generateStar(i));
-      }
+      moonElement.classList.add('threed');
+      moonElement.classList.add('moon');
+      skyElement.appendChild(moonElement);
+    }
 
+    function addPolaris() {
+      var skyElement = document.querySelector('#sky');
+      var polarisElement = document.createElement('div');
       polarisElement.classList.add('threed');
       polarisElement.classList.add('star');
       polarisElement.classList.add('polaris');
       skyElement.appendChild(polarisElement);
+    }
 
-      moonElement.classList.add('threed');
-      moonElement.classList.add('moon');
-
-      moonLabelElement.classList.add('star-label');
-      moonLabelElement.classList.add('threed');
-      moonLabelElement.style.display = 'none';
-      moonLabelElement.textContent = 'Moon';
-      moonElement.appendChild(moonLabelElement);
-      stars.push({
-        'labelEl': moonLabelElement,
-        'ra': 0,
-        'dec': 30
-      });
-      skyElement.appendChild(moonElement);
-
+    function generateStars(numStars) {
+      var skyElement = document.querySelector('#sky');
+      var starsCount = document.querySelector('.stars-count');
+      for (i=0; i < numStars; ++i) {
+        skyElement.appendChild(generateStar(i));
+      }
+      starsCount.textContent = stars.length + " stars";
     }
 
     function generateStar(id) {
       var starElement = document.createElement('div');
-      var starLabelElement = document.createElement('div');
       var ra = getRandomInt(0, 360);
       var dec = getRandomInt(-180, 180);
       var transform =
@@ -427,14 +343,7 @@ window.addEventListener("keypress", onkey, true);
       starElement.style.transform = transform;
       starElement.style.backgroundColor = starColors[getRandomInt(0,3)];
 
-      starLabelElement.classList.add('star-label');
-      starLabelElement.classList.add('threed');
-      starLabelElement.style.display = 'none';
-      starLabelElement.textContent = 'star ' + id;
-      starElement.appendChild(starLabelElement);
-
       stars.push({
-        "labelEl": starLabelElement,
         "ra": ra,
         "dec": dec
       });
@@ -450,6 +359,8 @@ window.addEventListener("keypress", onkey, true);
       skyElement.classList.add('rotateSky');
     }
 
+    addMoon();
+    addPolaris();
     generateStars(100);
 
   </script>
