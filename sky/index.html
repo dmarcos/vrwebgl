@@ -6,6 +6,26 @@
 
   <script type="text/javascript">
 
+function invertYAxis(q) {
+  var x = q.x, y = q.y, z = q.z, w = q.w;
+  x = x; y = -y; z = -z;
+  var l = Math.sqrt(x*x + y*y + z*z + w*w);
+  if (l == 0) {
+    x = y = z = 0;
+    w = 1;
+  } else {
+    l = 1/l;
+    x *= l; y *= l; z *= l; w *= l;
+  }
+  return {
+    x: x,
+    y: y,
+    z: z,
+    w: w
+  };
+
+}
+
 // helper function to convert a quaternion into a matrix, optionally
 // inverting the quaternion along the way
 function matrixFromOrientation(q, inverse) {
@@ -132,7 +152,7 @@ function quaternionFromEuler(x, y, z, a){
     return normalizeQuaternion(q);
 }
 
-function frameCallback() {
+function frameCallback(e) {
   // This is needed to update the CSS orientation/position from the HMD's orientation/position.
   // In the future, we may have CSS transform function to do this automatically -- for example:
   //    transform: vrOrientation() vrPosition()
@@ -146,44 +166,43 @@ function frameCallback() {
   var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation, true);
   var transform = cssOrientationMatrix + " " + cssCameraPositionTransform;
   cssCamera.style.transform = transform;
-  updateLaser(eulerFromQuaternion(state.orientation), state.orientation);
+  updateLaser(state.orientation);
 }
 
-function updateLaser(attitude, q) {
+function updateLaser(q) {
   var laserElement = document.querySelector('#laser');
-  var attitude = eulerFromQuaternion(q);
-  // var transform =
-  //   'rotateX(' + attitude.pitch + 'deg) ' +
-  //   'rotateY(' + -attitude.yaw +  'deg) ' +
-  //   'translate3d(0, 0, 500px) translate(-100px, -150px)';
-  var pitch = attitude.pitch;
-  q = multiplyQuaternions(q, quaternionFromEuler(1, 0, 0, - 2 * pitch * Math.PI/180));
-  var cssOrientationMatrix = cssMatrixFromOrientation(q, true);
-  var cssLaserPositionTransform = 'translate3d(0, 0, 500px) translate(-100px, -150px)';
+  var cssOrientationMatrix = cssMatrixFromOrientation(invertYAxis(q));
+  var cssLaserPositionTransform = 'translate3d(0, 0, 500px)';
+  if (mouseCursorEnabled) {
+    cssLaserPositionTransform = 'translate3d(0, 0, 500px) translate(' + cursorX + 'px, ' + cursorY + 'px)';
+    //laserElement.style.left = cursorX + 'px';
+    //laserElement.style.top = cursorY + 'px';
+  }
   transform = cssOrientationMatrix + " " + cssLaserPositionTransform;
   laserElement.style.transform = transform;
-  highlightStars(attitude.pitch, -attitude.yaw);
+  highlightStars();
 }
 
 var stars = [];
 
-function highlightStars(pitch, yaw) {
-  var i;
+function highlightStars() {
+  var laserElement = document.querySelector('#laser');
+  var laserBox = laserElement.getBoundingClientRect();
+  var starElement;
+  var starBox;
   var star;
-  var margin = 5;
   for (i=0; i<stars.length; i++) {
     star = stars[i];
-    //console.log("yaw: " + yaw + " pitch: " + pitch + " ra: " + star.ra + " dec: " + star.dec);
-    star.labelEl.style.display = 'none';
-    if (Math.abs(pitch) < Math.abs(star.dec) - margin || Math.abs(pitch) > Math.abs(star.dec) + margin) {
+    star.el.classList.remove('highlighted');
+    starBox = star.el.getBoundingClientRect();
+    if (starBox.right < laserBox.left ||
+        starBox.bottom < laserBox.top ||
+        starBox.left > laserBox.right ||
+        starBox.top > laserBox.bottom) {
       continue;
     }
-    if (Math.abs(yaw) < Math.abs(star.ra) - margin || Math.abs(yaw) > Math.abs(star.ra) + margin) {
-      continue;
-    }
-    star.labelEl.style.display = 'inline';
+    star.el.classList.add('highlighted');
   }
-
 }
 
 function vrDeviceCallback(vrdevs) {
@@ -215,6 +234,8 @@ function vrDeviceCallback(vrdevs) {
   requestAnimationFrame(frameCallback);
 }
 
+var mouseCursorEnabled = false;
+
 function onkey(event) {
   switch (String.fromCharCode(event.charCode)) {
   case 'f':
@@ -226,6 +247,71 @@ function onkey(event) {
   case 'r':
     rotateSky();
     break;
+  case 'm': // Enables/Disables mouse cursor
+    if (!mouseCursorEnabled) {
+      cssContainer.mozRequestPointerLock();
+    } else {
+      document.mozExitPointerLock();
+    }
+  }
+}
+
+var cursorX = 0;
+var cursorY = 0;
+
+function updateCursorCoordinates(e) {
+  var movementX = e.movementX ||
+      e.mozMovementX          ||
+      e.webkitMovementX       ||
+      0;
+
+  var movementY = e.movementY ||
+      e.mozMovementY          ||
+      e.webkitMovementY       ||
+      0;
+
+  cursorX += movementX;
+  cursorY += movementY;
+
+  var minX = -cssContainer.clientWidth / 2;
+  var maxX = cssContainer.clientWidth / 2;
+  var minY = -cssContainer.clientHeight / 2;
+  var maxY = cssContainer.clientHeight / 2;
+
+  if(cursorX >= maxX - 300) {
+    cursorX = maxX - 300;
+  }
+
+  if(cursorY >= maxY + 100) {
+    cursorY = maxY + 100;
+  }
+
+  if(cursorX <= minX + 300) {
+    cursorX = minX + 300;
+  }
+
+  if(cursorY <= minY - 100) {
+    cursorY = minY - 100;
+  }
+
+}
+
+// Hook pointer lock state change events for different browsers
+document.addEventListener('pointerlockchange', lockChangeAlert, false);
+document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+document.addEventListener('webkitpointerlockchange', lockChangeAlert, false);
+
+function lockChangeAlert() {
+  if(document.pointerLockElement === cssContainer ||
+  document.mozPointerLockElement === cssContainer ||
+  document.webkitPointerLockElement === cssContainer) {
+    console.log('The pointer lock status is now locked');
+    document.addEventListener("mousemove", updateCursorCoordinates, false);
+    mouseCursorEnabled = true;
+  } else {
+    console.log('The pointer lock status is now unlocked');
+    mouseCursorEnabled = false;
+    document.removeEventListener("mousemove", updateCursorCoordinates, false);
   }
 }
 
@@ -301,7 +387,12 @@ window.addEventListener("keypress", onkey, true);
   border-radius: 50%
 }
 
+.highlighted .star-label{
+  display: inline;
+}
+
 .star-label {
+  display: none;
   color: white;
   font-size: 30px;
 }
@@ -344,6 +435,7 @@ window.addEventListener("keypress", onkey, true);
   border: 3px solid green;
   border-radius: 50%;
   transform: rotateY(0deg) rotateX(0deg) translate3d(0, 0, 500px) translate(-100px, -150px);
+  z: 9999;
 }
 
 @keyframes rotate {
@@ -386,6 +478,7 @@ window.addEventListener("keypress", onkey, true);
       var moonElement = document.createElement('div');
       var moonLabelElement = document.createElement('div');
       var polarisElement = document.createElement('div');
+
       for (i=0; i < numStars; ++i) {
         skyElement.appendChild(generateStar(i));
       }
@@ -400,11 +493,10 @@ window.addEventListener("keypress", onkey, true);
 
       moonLabelElement.classList.add('star-label');
       moonLabelElement.classList.add('threed');
-      moonLabelElement.style.display = 'none';
       moonLabelElement.textContent = 'Moon';
       moonElement.appendChild(moonLabelElement);
       stars.push({
-        'labelEl': moonLabelElement,
+        'el': moonElement,
         'ra': 0,
         'dec': 30
       });
@@ -429,12 +521,11 @@ window.addEventListener("keypress", onkey, true);
 
       starLabelElement.classList.add('star-label');
       starLabelElement.classList.add('threed');
-      starLabelElement.style.display = 'none';
       starLabelElement.textContent = 'star ' + id;
       starElement.appendChild(starLabelElement);
 
       stars.push({
-        "labelEl": starLabelElement,
+        "el": starElement,
         "ra": ra,
         "dec": dec
       });
