@@ -6,14 +6,14 @@
 
   <script type="text/javascript">
 
-// helper function to convert a quaternion into a matrix, optionally
-// inverting the quaternion along the way
-function matrixFromOrientation(q, inverse) {
+// helper function to convert an orientation quaternion into a CSS transform matrix
+function matrixFromOrientation(q) {
   var m = Array(16);
 
   var x = q.x, y = q.y, z = q.z, w = q.w;
 
-  // if inverse is given, invert the quaternion first
+  // invert the quaternion first
+  var inverse = true;
   if (inverse) {
     x = -x; y = -y; z = -z;
     var l = Math.sqrt(x*x + y*y + z*z + w*w);
@@ -25,6 +25,10 @@ function matrixFromOrientation(q, inverse) {
       x *= l; y *= l; z *= l; w *= l;
     }
   }
+
+  // then flip it around y so that we can match CSS's y-down axis
+  y *= -1;
+  w *= -1;
 
   var x2 = x + x, y2 = y + y, z2 = z + z;
   var xx = x * x2, xy = x * y2, xz = x * z2;
@@ -73,7 +77,7 @@ var cssCamera;
 // XXX BUG this rotateZ should not be needed; the view rendering is flipped.
 // XXX BUG the rotateY should not be needed; the default viewport
 // is not oriented how I expected it to be oriented
-var cssCameraPositionTransform = "translate3d(0, 0, 0) rotateZ(180deg) rotateY(180deg)";
+var cssCameraPositionTransform = "translate3d(0, 0, 0)";
 
 function frameCallback() {
   // This is needed to update the CSS orientation/position from the HMD's orientation/position.
@@ -86,7 +90,7 @@ function frameCallback() {
   window.requestAnimationFrame(frameCallback);
 
   var state = vrSensor.getState();
-  var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation, true);
+  var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation);
 
   cssCamera.style.transform = cssOrientationMatrix + " " + cssCameraPositionTransform;
 }
@@ -204,6 +208,7 @@ window.addEventListener("keypress", onkey, true);
   text-align: center;
   line-height: 50px;
   background-color: red;
+  transform: rotateY(180deg);
 }
 
 #bottom {
@@ -264,7 +269,7 @@ window.addEventListener("keypress", onkey, true);
       panelElement.classList.add('pane');
       panelElement.textContent = stockValue.symbol + ' ' + stockValue.value;
       panelElement.style.transform =
-      'rotateY(' + horizontalMargin * i + 'deg) translate3d(0, 0, 500px) translate(-100px, -' + verticalMargin + 'px)';
+      'rotateY(' + horizontalMargin * i + 'deg) translate3d(0, 0, 500px) translate(-100px, -' + verticalMargin + 'px) rotateY(180deg)';
       rowElement.appendChild(panelElement);
     }
 

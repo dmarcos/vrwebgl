@@ -6,14 +6,14 @@
 
   <script type="text/javascript">
 
-// helper function to convert a quaternion into a matrix, optionally
-// inverting the quaternion along the way
-function matrixFromOrientation(q, inverse) {
+/// helper function to convert an orientation quaternion into a CSS transform matrix
+function matrixFromOrientation(q) {
   var m = Array(16);
 
   var x = q.x, y = q.y, z = q.z, w = q.w;
 
-  // if inverse is given, invert the quaternion first
+  // invert the quaternion first
+  var inverse = true;
   if (inverse) {
     x = -x; y = -y; z = -z;
     var l = Math.sqrt(x*x + y*y + z*z + w*w);
@@ -25,6 +25,10 @@ function matrixFromOrientation(q, inverse) {
       x *= l; y *= l; z *= l; w *= l;
     }
   }
+
+  // then flip it around y so that we can match CSS's y-down axis
+  y *= -1;
+  w *= -1;
 
   var x2 = x + x, y2 = y + y, z2 = z + z;
   var xx = x * x2, xy = x * y2, xz = x * z2;
