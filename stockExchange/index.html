@@ -309,6 +309,12 @@ window.addEventListener("keypress", onkey, true);
 
   getStockValues();
 
+  window.onload = goFullScreen;
+
+  function goFullScreen() {
+    cssContainer.mozRequestFullScreen({ vrDisplay: vrHMD });
+  }
+
   </script>
 </body>
 </html>

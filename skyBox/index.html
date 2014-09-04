@@ -6,9 +6,9 @@
 
   <script type="text/javascript">
 
-function invertXAxis(q) {
+function invertYAxis(q) {
   var x = q.x, y = q.y, z = q.z, w = q.w;
-  x = x; y = -y; z = z;
+  x = x; y = -y; z = -z;
   var l = Math.sqrt(x*x + y*y + z*z + w*w);
   if (l == 0) {
     x = y = z = 0;
@@ -26,15 +26,14 @@ function invertXAxis(q) {
 
 }
 
-
-// helper function to convert an orientation quaternion into a CSS transform matrix
-function matrixFromOrientation(q) {
+// helper function to convert a quaternion into a matrix, optionally
+// inverting the quaternion along the way
+function matrixFromOrientation(q, inverse) {
   var m = Array(16);
 
   var x = q.x, y = q.y, z = q.z, w = q.w;
 
-  // invert the quaternion first
-  var inverse = true;
+  // if inverse is given, invert the quaternion first
   if (inverse) {
     x = -x; y = -y; z = -z;
     var l = Math.sqrt(x*x + y*y + z*z + w*w);
@@ -46,10 +45,6 @@ function matrixFromOrientation(q) {
       x *= l; y *= l; z *= l; w *= l;
     }
   }
-
-  // then flip it around y so that we can match CSS's y-down axis
-  y *= -1;
-  w *= -1;
 
   var x2 = x + x, y2 = y + y, z2 = z + z;
   var xx = x * x2, xy = x * y2, xz = x * z2;
@@ -110,7 +105,8 @@ var cssCamera;
 // XXX BUG this rotateZ should not be needed; the view rendering is flipped.
 // XXX BUG the rotateY should not be needed; the default viewport
 // is not oriented how I expected it to be oriented
-var cssCameraPositionTransform = "translate3d(0, 0, 0)";
+var cssCameraPositionTransform = "translate3d(0, 0, 0) rotateZ(180deg) rotateY(180deg)";
+
 
 function normalizeQuaternion(q) {
   var l = Math.sqrt( q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w );
@@ -167,18 +163,21 @@ function frameCallback(e) {
   window.requestAnimationFrame(frameCallback);
 
   var state = vrSensor.getState();
-  var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation);
+  var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation, true);
   var transform = cssOrientationMatrix + " " + cssCameraPositionTransform;
+  if (mouseLook) {
+    transform = 'translate3d(0, 0, 0) rotateX('+mouseDegX*-1+'deg) rotateY('+mouseDegY+'deg) scaleX(-1)';
+  }
   cssCamera.style.transform = transform;
   updateLaser(state.orientation);
 }
 
 function updateLaser(q) {
   var laserElement = document.querySelector('#laser');
-  var cssOrientationMatrix = cssMatrixFromOrientation(invertXAxis(q));
-  var cssLaserPositionTransform = 'translate3d(0, 0, 500px) rotateZ(180deg)';
+  var cssOrientationMatrix = cssMatrixFromOrientation(invertYAxis(q));
+  var cssLaserPositionTransform = 'translate3d(0, 0, 500px)';
   if (mouseCursorEnabled) {
-    cssLaserPositionTransform = 'translate3d(0, 0, 500px) translate(' + -cursorX + 'px, ' + cursorY + 'px)';
+    cssLaserPositionTransform = 'translate3d(0, 0, 500px) translate(' + cursorX + 'px, ' + cursorY + 'px)';
     //laserElement.style.left = cursorX + 'px';
     //laserElement.style.top = cursorY + 'px';
   }
@@ -239,6 +238,7 @@ function vrDeviceCallback(vrdevs) {
 }
 
 var mouseCursorEnabled = false;
+var mouseLook = false;
 
 function onkey(event) {
   switch (String.fromCharCode(event.charCode)) {
@@ -257,7 +257,26 @@ function onkey(event) {
     } else {
       document.mozExitPointerLock();
     }
+    break;
+  case 'h':
+    mouseLook = !mouseLook;
+    window.removeEventListener("mousemove", onmousemove);
+    if (mouseLook) {
+      window.addEventListener("mousemove", onmousemove);
+    }
+    break;
   }
+}
+
+var clientWidth = document.body.clientWidth;
+var clientHeight = document.body.clientHeight;
+var mouseMaxY = 180;  // max deg movement in X direction of mouse.
+var mouseMaxX = 90;   // max deg movement in Y direction of mouse.
+var mouseDegY, mouseDegX;
+
+function onmousemove(e) {
+  mouseDegY = (e.clientX - clientWidth)/(clientWidth/2/mouseMaxY);
+  mouseDegX = (e.clientY - (clientHeight/2))/(clientHeight/2/mouseMaxX);
 }
 
 var cursorX = 0;
@@ -384,15 +403,11 @@ window.addEventListener("keypress", onkey, true);
   /* the transform itself is set programatically, since it needs to take into account the HMD orientation */
 }
 
-#sky {
-  transform: rotateY(180deg);
-}
-
 .star {
   width: 2px;
   height: 2px;
   background-color: white;
-  border-radius: 50%;
+  border-radius: 50%
 }
 
 .highlighted .star-label{
@@ -422,7 +437,7 @@ window.addEventListener("keypress", onkey, true);
 .moon {
   width: 60px;
   height: 60px;
-  transform: rotateY(0deg) rotateX(30deg) translate3d(0, 0, 500px) translate(-100px, -150px) scaleX(-1);
+  transform: rotateY(0deg) rotateX(30deg) translate3d(0, 0, 500px) translate(-100px, -150px);
   background-image: url('images/moon.png');
   background-size: contain;
 }
@@ -442,8 +457,8 @@ window.addEventListener("keypress", onkey, true);
   background-color: transparent;
   border: 3px solid green;
   border-radius: 50%;
-  transform: rotateY(0) rotateX(0) translate3d(0, 0, 500px) translate(-100px, -150px);
-  z-index: 9999;
+  transform: rotateY(0deg) rotateX(0deg) translate3d(0, 0, 500px) translate(-100px, -150px);
+  z: 9999;
 }
 
 @keyframes rotate {
@@ -467,12 +482,11 @@ window.addEventListener("keypress", onkey, true);
          This and all its children will have transform-style: preserve-3d set via the class, as well as
          transform-origin set to 0,0 -->
     <div id="camera" class="threed">
+      <div id="laser" class="threed"></div>
       <div id="sky" class="threed">
-        <div id="laser" class="threed"></div>
-        <div id="ground" class="threed"></div>
-      </div>
+      <div id="ground" class="threed"></div>
+    </div>
   </div>
-  <script src="js/leap-0.6.2.js"></script>
   <script type="text/javascript">
 
     var starColors = [
@@ -500,8 +514,8 @@ window.addEventListener("keypress", onkey, true);
       moonElement.classList.add('threed');
       moonElement.classList.add('moon');
 
-      moonLabelElement.classList.add('threed');
       moonLabelElement.classList.add('star-label');
+      moonLabelElement.classList.add('threed');
       moonLabelElement.textContent = 'Moon';
       moonElement.appendChild(moonLabelElement);
       stars.push({
@@ -528,8 +542,8 @@ window.addEventListener("keypress", onkey, true);
       starElement.style.transform = transform;
       starElement.style.backgroundColor = starColors[getRandomInt(0,3)];
 
-      starLabelElement.classList.add('threed');
       starLabelElement.classList.add('star-label');
+      starLabelElement.classList.add('threed');
       starLabelElement.textContent = 'star ' + id;
       starElement.appendChild(starLabelElement);
 
@@ -551,26 +565,6 @@ window.addEventListener("keypress", onkey, true);
     }
 
     generateStars(100);
-
-    Leap.loop(function(frame) {
-      var hand = frame.hands[0];
-      if (!hand) {
-        return;
-      }
-      var handRotationX = (hand._rotation[2]*90);
-      var handRotationY = (hand._rotation[1]*90);
-      var handRotationZ = (hand._rotation[0]*90);
-      var cssHandOrientation =
-        'rotateX(' + handRotationY +  'deg)';
-        //'rotateY(' + -handRotationX +  'deg)';
-      var transform = cssHandOrientation + " " + cssCameraPositionTransform;
-      cssCamera.style.transform = transform;
-    })
-
-    window.onload = goFullScreen;
-    function goFullScreen() {
-      cssContainer.mozRequestFullScreen({ vrDisplay: vrHMD });
-    }
 
   </script>
 </body>
