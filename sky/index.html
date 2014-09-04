@@ -176,9 +176,9 @@ function frameCallback(e) {
 function updateLaser(q) {
   var laserElement = document.querySelector('#laser');
   var cssOrientationMatrix = cssMatrixFromOrientation(invertXAxis(q));
-  var cssLaserPositionTransform = 'translate3d(0, 0, 200px) rotateZ(180deg)';
+  var cssLaserPositionTransform = 'translate3d(0, 0, 500px) rotateZ(180deg)';
   if (mouseCursorEnabled) {
-    cssLaserPositionTransform = 'translate3d(0, 0, 200px) translate(' + -cursorX + 'px, ' + cursorY + 'px)';
+    cssLaserPositionTransform = 'translate3d(0, 0, 500px) translate(' + -cursorX + 'px, ' + cursorY + 'px)';
     //laserElement.style.left = cursorX + 'px';
     //laserElement.style.top = cursorY + 'px';
   }
