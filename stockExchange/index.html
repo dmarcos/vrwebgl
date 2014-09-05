@@ -120,6 +120,8 @@ function vrDeviceCallback(vrdevs) {
     alert("Found a HMD, but didn't find its orientation sensor?");
   }
 
+  cssContainer.mozRequestFullScreen({ vrDisplay: vrHMD });
+
   // kick off rendering
   requestAnimationFrame(frameCallback);
 }
@@ -309,11 +311,6 @@ window.addEventListener("keypress", onkey, true);
 
   getStockValues();
 
-  window.onload = goFullScreen;
-
-  function goFullScreen() {
-    cssContainer.mozRequestFullScreen({ vrDisplay: vrHMD });
-  }
 
   </script>
 </body>
