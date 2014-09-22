@@ -25,7 +25,6 @@
       this.headTracker.zeroSensor();
       break;
     case 'm': // toggle mouse look
-      console.log("CACA");
       this.mouseLook = !this.mouseLook;
       break;
     }
