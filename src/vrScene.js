@@ -3,11 +3,38 @@
   var VRScene = window.VRScene = function (el, callback) {
     var self = this;
     this.el = el;
+    // Cache client size to prevent reflows
+    this.clientWidth = document.body.clientWidth;
+    this.clientHeight = document.body.clientHeight;
     this.requestVRHardware(onVRHardwareReady);
     function onVRHardwareReady(hmd, sensor) {
       if (hmd && sensor) {
         self.update();
       }
+    }
+    window.addEventListener("keypress", this.onkey.bind(this), true);
+    window.addEventListener("mousemove", this.onmousemove.bind(this));
+  };
+
+  VRScene.prototype.onkey = function(event) {
+    switch (String.fromCharCode(event.charCode)) {
+    case 'f':
+      this.el.mozRequestFullScreen({ vrDisplay: this.vrHMD });
+      break;
+    case 'z':
+      this.headTracker.zeroSensor();
+      break;
+    case 'm': // toggle mouse look
+      console.log("CACA");
+      this.mouseLook = !this.mouseLook;
+      break;
+    }
+  };
+
+  VRScene.prototype.onmousemove = function(e) {
+    if (this.mouseLook) {
+      this.mouseDegY =  (e.clientX /this.clientWidth) * 360 * 2;
+      this.mouseDegX = (e.clientY / this.clientHeight)* 360 * 2;
     }
   };
 
@@ -55,6 +82,7 @@
 
   VRScene.prototype.update = function(vrDevices) {
     var headTracker = this.headTracker;
+    var mouseLook = this.mouseLook;
     var state = headTracker.getState();
     var cameras = this.el.querySelectorAll('.camera');
     // The camera's position, as a css transform string.
@@ -62,8 +90,14 @@
     var cssCameraPositionTransform = "translate3d(0, 0, 0)";
     var cssOrientationMatrix = cssMatrixFromOrientation(state.orientation, true);
     var i;
+    var transform;
+    if (mouseLook) {
+      transform = 'translate3d(0, 0, 0) rotateX('+this.mouseDegX+'deg) rotateY('+this.mouseDegY+'deg) rotateZ(180deg)';
+    } else {
+      transform = cssOrientationMatrix + " " + cssCameraPositionTransform;
+    }
     for (i = 0; i < cameras.length; i++) {
-      cameras[i].style.transform = cssOrientationMatrix + " " + cssCameraPositionTransform;
+      cameras[i].style.transform = transform;
     }
     window.requestAnimationFrame(this.update.bind(this));
   };
