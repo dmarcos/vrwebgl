@@ -1,6 +1,6 @@
 HI, I heard you want to do cool VR stuff on the Web using CSS and HTML. You came to the right place. Let's get you started:
 
-1. Make sure one of the [Firefox VR enabled builds](http://vrhelloworld.com/builds/ "VR Firefox") installed
+1. Make sure you have one of the [Firefox VR enabled builds](http://vrhelloworld.com/builds/ "VR Firefox") installed
 2. Make sure you have installed yeoman `npm install -g yo`
 3. Install the VR CSS generator `npm install -g generator-vrcss`
 4. Type `yo vrcss YOUR_PROJECT_NAME` to create an hello world VR experience in the YOUR_PROJECT_NAME folder
