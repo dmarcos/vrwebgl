@@ -1,0 +1,20 @@
+{
+  "name": "generator-vrwebgl",
+  "version": "0.1.0",
+  "description": "Template to develop VR in the browser using HTML and CSS",
+  "keywords": ["yeoman-generator"],
+  "dependencies": {
+    "yeoman-generator": "^0.17.3"
+  },
+  "homepage": "https://github.com/dmarcos/vrwebgl",
+  "bugs": "https://github.com/dmarcos/vrwebgl/issues",
+  "author": {
+    "name": "Diego Marcos",
+    "email": "diego.marcos@gmail.com"
+  },
+  "main": "app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmarcos/vrwebgl.git"
+  }
+}
