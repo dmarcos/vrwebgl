@@ -1,0 +1,114 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.4.9
+3 info using node@v0.10.28
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/dmarcos/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz',
+10 verbose tar pack   '.' ]
+11 verbose tarball /var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+12 verbose folder .
+13 info prepublish generator-vrwebgl@0.1.0
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /Users/dmarcos/.npm/1f1177db-tar.lock
+16 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+17 verbose lock tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz /Users/dmarcos/.npm/48acd8ec-11936-0-0974383158609271-tmp-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+21 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+22 verbose tar unpack /var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+23 silly lockFile 604dc5ab--generator-vrwebgl-0-1-0-package tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package
+24 verbose lock tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package /Users/dmarcos/.npm/604dc5ab--generator-vrwebgl-0-1-0-package.lock
+25 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+26 verbose lock tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz /Users/dmarcos/.npm/48acd8ec-11936-0-0974383158609271-tmp-tgz.lock
+27 silly gunzTarPerm modes [ '755', '644' ]
+28 silly gunzTarPerm extractEntry package.json
+29 silly gunzTarPerm extractEntry .npmignore
+30 silly gunzTarPerm extractEntry README.md
+31 silly gunzTarPerm extractEntry app/index.js
+32 silly gunzTarPerm extractEntry template/css/scene.css
+33 silly gunzTarPerm extractEntry template/css/vr.css
+34 silly gunzTarPerm extractEntry template/index.html
+35 silly gunzTarPerm extractEntry template/js/VRControls.js
+36 silly gunzTarPerm extractEntry template/js/VREffect.js
+37 silly gunzTarPerm extractEntry template/js/stats.min.js
+38 silly gunzTarPerm extractEntry template/js/three.min.js
+39 silly lockFile 604dc5ab--generator-vrwebgl-0-1-0-package tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package
+40 silly lockFile 604dc5ab--generator-vrwebgl-0-1-0-package tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package
+41 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+42 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+43 silly lockFile 3a52ce78- .
+44 silly lockFile 3a52ce78- .
+45 silly publish { name: 'generator-vrwebgl',
+45 silly publish   version: '0.1.0',
+45 silly publish   description: 'Template to develop VR in the browser using HTML and CSS',
+45 silly publish   keywords: [ 'yeoman-generator' ],
+45 silly publish   dependencies: { 'yeoman-generator': '^0.17.3' },
+45 silly publish   homepage: 'https://github.com/dmarcos/vrwebgl',
+45 silly publish   bugs: { url: 'https://github.com/dmarcos/vrwebgl/issues' },
+45 silly publish   author: { name: 'Diego Marcos', email: 'diego.marcos@gmail.com' },
+45 silly publish   main: 'app/index.js',
+45 silly publish   repository: { type: 'git', url: 'https://github.com/dmarcos/vrwebgl.git' },
+45 silly publish   readme: 'HI, I heard you want to do cool VR stuff on the Web using WebGL. You came to the right place. Let\'s get you started:\n\n1. Make sure you have one of the [Firefox VR enabled builds](http://vrhelloworld.com/builds/ "VR Firefox") installed\n2. Make sure you have installed yeoman `npm install -g yo`\n3. Install the VR WebGL generator `npm install -g generator-vrwebgl`\n4. Type `yo vrwebgl PROJECT_NAME` to create a hello world VR experience in the PROJECT_NAME folder\n5. Open PROJECT_NAME/index.html in your VR Browser\n6. If you press \'f\' the browser should go fullscreen and the content rendered in stereo mode.\n\nIf you don\'t like yeoman you can also copy the template manually:\n\n1. Clone this repo\n`git clone https://github.com/dmarcos/vrwebgl.git`\n3. Copy the template folder to wherever you want\n`cp -rf template YOUR_VR_EXPERIENCE_PATH`\n\n\n\n',
+45 silly publish   readmeFilename: 'README.md',
+45 silly publish   _id: 'generator-vrwebgl@0.1.0',
+45 silly publish   _shasum: '77032bdf7d20d663c3defa8067a65242eb55bfb2',
+45 silly publish   _from: '.' }
+46 verbose url raw generator-vrwebgl
+47 verbose url resolving [ 'https://registry.npmjs.org/', './generator-vrwebgl' ]
+48 verbose url resolved https://registry.npmjs.org/generator-vrwebgl
+49 info trying registry request attempt 1 at 16:55:12
+50 http PUT https://registry.npmjs.org/generator-vrwebgl
+51 http 403 https://registry.npmjs.org/generator-vrwebgl
+52 verbose headers { date: 'Tue, 23 Sep 2014 23:55:12 GMT',
+52 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+52 verbose headers   'content-type': 'application/json',
+52 verbose headers   'cache-control': 'max-age=60',
+52 verbose headers   'content-length': '3021',
+52 verbose headers   'accept-ranges': 'bytes',
+52 verbose headers   via: '1.1 varnish',
+52 verbose headers   'x-served-by': 'cache-lax1426-LAX',
+52 verbose headers   'x-cache': 'MISS',
+52 verbose headers   'x-cache-hits': '0',
+52 verbose headers   'x-timer': 'S1411516512.569669,VS0,VE227',
+52 verbose headers   'keep-alive': 'timeout=10, max=50',
+52 verbose headers   connection: 'Keep-Alive' }
+53 error publish Failed PUT 403
+54 error Error: forbidden cannot modify pre-existing version: 0.1.0
+54 error old={"name":"generator-vrwebgl","version":"0.1.0","description":"Template to develop VR in the browser using HTML and CSS","keywords":["yeoman-generator"],"dependencies":{"yeoman-generator":"^0.17.3"},"homepage":"https://github.com/dmarcos/vrwebgl","bugs":{"url":"https://github.com/dmarcos/vrwebgl/issues"},"author":{"name":"Diego Marcos","email":"diego.marcos@gmail.com"},"main":"app/index.js","repository":{"type":"git","url":"https://github.com/dmarcos/vrwebgl.git"},"_id":"generator-vrwebgl@0.1.0","_shasum":"f1613284cc097c4071b7a31ae179dd59e6ced9cf","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"dmarcos","email":"diego.marcos@gmail.com"},"maintainers":[{"name":"dmarcos","email":"diego.marcos@gmail.com"}],"dist":{"shasum":"f1613284cc097c4071b7a31ae179dd59e6ced9cf","tarball":"http://registry.npmjs.org/generator-vrwebgl/-/generator-vrwebgl-0.1.0.tgz"}}
+54 error new={"name":"generator-vrwebgl","version":"0.1.0","description":"Template to develop VR in the browser using HTML and CSS","keywords":["yeoman-generator"],"dependencies":{"yeoman-generator":"^0.17.3"},"homepage":"https://github.com/dmarcos/vrwebgl","bugs":{"url":"https://github.com/dmarcos/vrwebgl/issues"},"author":{"name":"Diego Marcos","email":"diego.marcos@gmail.com"},"main":"app/index.js","repository":{"type":"git","url":"https://github.com/dmarcos/vrwebgl.git"},"readme":"HI, I heard you want to do cool VR stuff on the Web using WebGL. You came to the right place. Let's get you started:\u000a\u000a1. Make sure you have one of the [Firefox VR enabled builds](http://vrhelloworld.com/builds/ \"VR Firefox\") installed\u000a2. Make sure you have installed yeoman `npm install -g yo`\u000a3. Install the VR WebGL generator `npm install -g generator-vrwebgl`\u000a4. Type `yo vrwebgl PROJECT_NAME` to create a hello world VR experience in the PROJECT_NAME folder\u000a5. Open PROJECT_NAME/index.html in your VR Browser\u000a6. If you press 'f' the browser should go fullscreen and the content rendered in stereo mode.\u000a\u000aIf you don't like yeoman you can also copy the template manually:\u000a\u000a1. Clone this repo\u000a`git clone https://github.com/dmarcos/vrwebgl.git`\u000a3. Copy the template folder to wherever you want\u000a`cp -rf template YOUR_VR_EXPERIENCE_PATH`\u000a\u000a\u000a\u000a","readmeFilename":"README.md","_id":"generator-vrwebgl@0.1.0","_shasum":"77032bdf7d20d663c3defa8067a65242eb55bfb2","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"dmarcos","email":"diego.marcos@gmail.com"},"maintainers":[{"name":"dmarcos","email":"diego.marcos@gmail.com"}],"dist":{"shasum":"77032bdf7d20d663c3defa8067a65242eb55bfb2","tarball":"http://registry.npmjs.org/generator-vrwebgl/-/generator-vrwebgl-0.1.0.tgz"}}: generator-vrwebgl
+54 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:273:14)
+54 error     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:211:65)
+54 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:123:22)
+54 error     at Request.EventEmitter.emit (events.js:98:17)
+54 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:893:14)
+54 error     at Request.EventEmitter.emit (events.js:117:20)
+54 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:844:12)
+54 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+54 error     at _stream_readable.js:919:16
+54 error     at process._tickCallback (node.js:419:13)
+55 error If you need help, you may report this *entire* log,
+55 error including the npm and node versions, at:
+55 error     <http://github.com/npm/npm/issues>
+56 error System Darwin 13.3.0
+57 error command "node" "/usr/local/bin/npm" "publish"
+58 error cwd /Users/dmarcos/Development/VR/vrwebgl
+59 error node -v v0.10.28
+60 error npm -v 1.4.9
+61 verbose exit [ 1, true ]
