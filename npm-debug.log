@@ -19,24 +19,24 @@
 7 verbose parsed url   href: '.' }
 8 silly lockFile 3a52ce78- .
 9 verbose lock . /Users/dmarcos/.npm/3a52ce78-.lock
-10 verbose tar pack [ '/var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz',
+10 verbose tar pack [ '/var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz',
 10 verbose tar pack   '.' ]
-11 verbose tarball /var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+11 verbose tarball /var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
 12 verbose folder .
 13 info prepublish generator-vrwebgl@0.1.0
 14 silly lockFile 1f1177db-tar tar://.
 15 verbose lock tar://. /Users/dmarcos/.npm/1f1177db-tar.lock
-16 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
-17 verbose lock tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz /Users/dmarcos/.npm/48acd8ec-11936-0-0974383158609271-tmp-tgz.lock
+16 silly lockFile f73e635e-93324-0-6319681978784502-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
+17 verbose lock tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz /Users/dmarcos/.npm/f73e635e-93324-0-6319681978784502-tmp-tgz.lock
 18 silly lockFile 1f1177db-tar tar://.
 19 silly lockFile 1f1177db-tar tar://.
-20 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
-21 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
-22 verbose tar unpack /var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+20 silly lockFile f73e635e-93324-0-6319681978784502-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
+21 silly lockFile f73e635e-93324-0-6319681978784502-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
+22 verbose tar unpack /var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
 23 silly lockFile 604dc5ab--generator-vrwebgl-0-1-0-package tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package
 24 verbose lock tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package /Users/dmarcos/.npm/604dc5ab--generator-vrwebgl-0-1-0-package.lock
-25 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
-26 verbose lock tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz /Users/dmarcos/.npm/48acd8ec-11936-0-0974383158609271-tmp-tgz.lock
+25 silly lockFile f73e635e-93324-0-6319681978784502-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
+26 verbose lock tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz /Users/dmarcos/.npm/f73e635e-93324-0-6319681978784502-tmp-tgz.lock
 27 silly gunzTarPerm modes [ '755', '644' ]
 28 silly gunzTarPerm extractEntry package.json
 29 silly gunzTarPerm extractEntry .npmignore
@@ -51,8 +51,8 @@
 38 silly gunzTarPerm extractEntry template/js/three.min.js
 39 silly lockFile 604dc5ab--generator-vrwebgl-0-1-0-package tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package
 40 silly lockFile 604dc5ab--generator-vrwebgl-0-1-0-package tar:///Users/dmarcos/.npm/generator-vrwebgl/0.1.0/package
-41 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
-42 silly lockFile 48acd8ec-11936-0-0974383158609271-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60761-OCtyqebk/1411516511936-0.0974383158609271/tmp.tgz
+41 silly lockFile f73e635e-93324-0-6319681978784502-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
+42 silly lockFile f73e635e-93324-0-6319681978784502-tmp-tgz tar:///var/folders/h2/s53_qlld0rv2zvmxf9jsnv_40000gn/T/npm-60853-M30bD1Pq/1411516893324-0.6319681978784502/tmp.tgz
 43 silly lockFile 3a52ce78- .
 44 silly lockFile 3a52ce78- .
 45 silly publish { name: 'generator-vrwebgl',
@@ -73,20 +73,20 @@
 46 verbose url raw generator-vrwebgl
 47 verbose url resolving [ 'https://registry.npmjs.org/', './generator-vrwebgl' ]
 48 verbose url resolved https://registry.npmjs.org/generator-vrwebgl
-49 info trying registry request attempt 1 at 16:55:12
+49 info trying registry request attempt 1 at 17:01:33
 50 http PUT https://registry.npmjs.org/generator-vrwebgl
 51 http 403 https://registry.npmjs.org/generator-vrwebgl
-52 verbose headers { date: 'Tue, 23 Sep 2014 23:55:12 GMT',
+52 verbose headers { date: 'Wed, 24 Sep 2014 00:01:34 GMT',
 52 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
 52 verbose headers   'content-type': 'application/json',
 52 verbose headers   'cache-control': 'max-age=60',
 52 verbose headers   'content-length': '3021',
 52 verbose headers   'accept-ranges': 'bytes',
 52 verbose headers   via: '1.1 varnish',
-52 verbose headers   'x-served-by': 'cache-lax1426-LAX',
+52 verbose headers   'x-served-by': 'cache-lax1430-LAX',
 52 verbose headers   'x-cache': 'MISS',
 52 verbose headers   'x-cache-hits': '0',
-52 verbose headers   'x-timer': 'S1411516512.569669,VS0,VE227',
+52 verbose headers   'x-timer': 'S1411516894.147199,VS0,VE262',
 52 verbose headers   'keep-alive': 'timeout=10, max=50',
 52 verbose headers   connection: 'Keep-Alive' }
 53 error publish Failed PUT 403
