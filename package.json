@@ -1,6 +1,6 @@
 {
   "name": "generator-vrwebgl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Template to develop VR in the browser using WebGL",
   "keywords": ["yeoman-generator"],
   "dependencies": {
